@@ -9,17 +9,50 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 
 function  App () {
+
   const ref = useRef(null);
+
   const checkbox = useRef(null);
- 
+
   const [inputs, setInputs] = useState([])
   const [list, setList] = useState([])
- 
+
   const addfrominput = () => {
     console.log(inputs)
     let random = Math.random()
-    setList([...list, { value: inputs, id: random }])
-    console.log(list)
+    setList([...list, { value: inputs, id: random, info:'чай май вся хуйня' }])
+     console.log(list)
+
+
+    function returnLastItem(arr) {
+  return arr[arr.length - 1];
+}
+console.log(returnLastItem(list));
+
+
+
+
+    fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      body: JSON.stringify(list),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then((response) => response.json())
+      .then((json) =>  console.log(json))
+      .then(()=> { alert('yes')} )
+      ;
+  
+      fetch('https://jsonplaceholder.typicode.com/posts')
+        .then((response) => response.json())
+        .then((json) =>  console.log(json))
+        .then(()=> { alert('yes ebnvrt')} )
+        ;
+
+     
+   
+         
   }
 
 
@@ -61,11 +94,11 @@ setList(newarray)
 
 
 
-            <div className='flow positionreder' > <input type="checkbox" name="disabled"    ref={checkbox} ></input> 
+            <div className='flow positionreder'> <input type="checkbox" name="disabled"    ref={checkbox} ></input> 
              
              
 
-              <p onClick={check}    > {item.value} </p> 
+              <p onClick={check}> {item.value} </p> 
 
 
               <Tooltip title="Delete">
@@ -73,14 +106,14 @@ setList(newarray)
                   <DeleteIcon />
                 </IconButton>
               </Tooltip>
-              dsd
+              
               {/* <button  onClick={ ()=> deletehandler(item.id) } > удалить заметку</button> */}
                             
              </div>
 
               
             </div>
-                      )
+          )
         })}
       </div> 
   
