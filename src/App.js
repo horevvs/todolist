@@ -20,7 +20,7 @@ function  App () {
   const addfrominput = () => {
     console.log(inputs)
     let random = Math.random()
-    setList([...list, { value: inputs, id: random, info:'чай май вся хуйня' }])
+    setList([...list, { value: inputs, id: random, info:'добавил' }])
      console.log(list)
 
 
