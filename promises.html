@@ -15,43 +15,8 @@
 
 
 
-fetch('https://jsonplaceholder.typicode.com/posts/1', {
-  method: 'PUT',
-  body: JSON.stringify({
-    id: 1,
-    title: 'foo',
-    body: 'bar',
-    userId: 1,
-  }),
-  headers: {
-    'Content-type': 'application/json; charset=UTF-8',
-  },
-})
-  .then((response) => response.json())
-  .then((json) => console.log(json));
-
-        // let a = {
-
-        //     title: 'dwdfoo',
-        //     body: 'badadr',
-        //     bodys: 'badadr',
-        //     userId: 1,
-
-        // }
-
-
-        // fetch('https://jsonplaceholder.typicode.com/posts', {
-        //     method: 'PUT',
-        //     body: JSON.stringify(a),
-        //     headers: {
-        //         'Content-type': 'application/json; charset=UTF-8',
-        //     },
-        // })
-        //     .then((response) => response.json())
-        //     .then((json) => console.log(json));
-
-
-
+let arr = ['a', 'b', 'c'];
+console.log(arr.pop());
     </script>
 </body>
 
