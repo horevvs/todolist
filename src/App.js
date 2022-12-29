@@ -41,15 +41,37 @@ function App() {
     })
   }
 
-
-    const send = (id) => {
+  const send = (id) => {
     const inputElement = nameField.current;
+
+    let array = list.filter((item) => item.id == id)
+
+    let obj={
+      value:`${inputElement.value}`,
+      id:id,
+    }
+
     
-    let array = list.filter((item) => item.id !== id)
-    console.log(array)
+
+    array.push(inputElement.value)
     
-    console.log(inputElement.value);
+   console.log(array)
+   console.log(obj)
+    
+
   };
+
+
+
+
+  //   const send = (id) => {
+  //   const inputElement = nameField.current;
+
+  //   let array = list.filter((item) => item.id !== id)
+  //   console.log(array)
+
+  //   console.log(inputElement.value);
+  // };
 
 
 
@@ -65,7 +87,7 @@ function App() {
 
   return (
 
-    
+
     <>
 
       {/* <Getcomponents /> */}
@@ -90,6 +112,8 @@ function App() {
                 </Tooltip>
                 <div className='opasity'>
                   <input type="text" ref={nameField} placeholder='add text' />
+
+
 
                   <Button variant="text" onClick={() => send(item.id)} >  edit </Button>
                 </div>
