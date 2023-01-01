@@ -3,59 +3,36 @@ import React, { useRef, useEffect } from 'react';
 import './App.css';
 
 
-const names = ["whale", "squid", "turtle", "coral", "starfish"];
 
 
 
 
+class Getcomponents extends React.Component {
+  constructor () {
+    super()
+    this.state = {
+      useElem: 0
+    }
+  }
+  handleClick (elem) {
+    var id = elem.target.id
+    this.setState({ useElem: id })
+  }
 
-function Getcomponents() {
-   
-        const nameField = useRef(null);
-        const send = () => {
-          // свойство current указывает на элемент input
-          const inputElement = nameField.current;
-          console.log("Имя: " + inputElement.value);
-        };
-        return (
-          <div>
-            <input type="text" ref={nameField} />
-            <button onClick={send}>Отправить</button>
-          </div>
-        );
-      
-};
-
-
-
-
-
-
-// // return (
-// //     <div>
-// //         {names.map(item => {
-// //             return (
-// //             <ul>{item}</ul>
-// //             )
-// //         })}
-// //     </div>
-// );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  render () {
+    return (
+      <div onClick={this.handleClick}>
+        {new Array(20).fill().map((_, index) =>
+          <div
+            key={index} // elem.id
+            id={index} // elem.id
+            useElem={index === this.state.useElem}
+          />
+        )}
+      </div>
+    )
+  }
+}
 
 
 

@@ -20,7 +20,7 @@ function App() {
   const [list, setList] = useState([])
 
   const addfrominput = () => {
-    let random = Math.random()
+    let random = Math.random().toFixed(2)*1000
     setList([...list, { value: inputs, id: random }])
     console.log(list.length)
     let index = list.at(-1);
@@ -43,37 +43,27 @@ function App() {
 
   const send = (id) => {
     const inputElement = nameField.current;
-
-    let array = list.filter((item) => item.id == id)
-
-    let obj={
-      value:`${inputElement.value}`,
-      id:id,
+    // let array = list.filter((item) => item.id == id)
+    let newarray = list
+    let obj = {
+      value: `${inputElement.value}`,
+      ids: id,
     }
 
-    
-
-    array.push(inputElement.value)
-    
-   console.log(array)
-   console.log(obj)
-    
-
+console.log(obj.value)
+console.log(obj.ids)
+console.log(obj)
+    // for (let i = 0; i < newarray.length; i++)
+    //   if (newarray[i].id !== obj.ids) {
+    //     console.log('не нашел')
+    //   }
+    //   else {
+    //     newarray[i].value = obj.value
+    //     console.log( newarray)
+    //     console.log( array)
+    //   }
+  
   };
-
-
-
-
-  //   const send = (id) => {
-  //   const inputElement = nameField.current;
-
-  //   let array = list.filter((item) => item.id !== id)
-  //   console.log(array)
-
-  //   console.log(inputElement.value);
-  // };
-
-
 
   const deletehandler = (id) => {
     let newarray = list.filter((item) => item.id !== id)
@@ -83,17 +73,13 @@ function App() {
 
   let check = () => {
     checkbox.current.checked = true
+    
   }
 
   return (
-
-
     <>
-
       {/* <Getcomponents /> */}
-
       <div >
-
 
         <div className='position'>
           <TextField id="standard-basic" label="заметки" variant="standard" ref={ref} value={inputs} onChange={(e) => setInputs(e.target.value)} />
@@ -112,21 +98,13 @@ function App() {
                 </Tooltip>
                 <div className='opasity'>
                   <input type="text" ref={nameField} placeholder='add text' />
-
-
-
                   <Button variant="text" onClick={() => send(item.id)} >  edit </Button>
                 </div>
-
               </div>
             </div>
           )
         })}
-
-
-
       </div>
-
     </>
   )
 }
