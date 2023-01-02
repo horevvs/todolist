@@ -7,20 +7,21 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import Getcomponents from './Getcomponents';
+
 
 
 function App() {
 
   const ref = useRef(null);
-  const nameField = useRef(null);
+
   const checkbox = useRef(null);
 
   const [inputs, setInputs] = useState([])
   const [list, setList] = useState([])
+  const [edit, setEdit] = useState([])
 
   const addfrominput = () => {
-    let random = Math.random().toFixed(2)*1000
+    let random = Math.random().toFixed(2) * 1000
     setList([...list, { value: inputs, id: random }])
     console.log(list.length)
     let index = list.at(-1);
@@ -41,29 +42,30 @@ function App() {
     })
   }
 
-  const send = (id) => {
-    const inputElement = nameField.current;
-    // let array = list.filter((item) => item.id == id)
-    let newarray = list
+  const send = (id,value) => {
     let obj = {
-      value: `${inputElement.value}`,
-      ids: id,
+      value: `${edit}`,
+      id: id,
     }
+    console.log(obj)
 
-console.log(obj.value)
-console.log(obj.ids)
-console.log(obj)
-    // for (let i = 0; i < newarray.length; i++)
-    //   if (newarray[i].id !== obj.ids) {
-    //     console.log('не нашел')
-    //   }
-    //   else {
-    //     newarray[i].value = obj.value
-    //     console.log( newarray)
-    //     console.log( array)
-    //   }
-  
+    let newarrays = list
+    for (let i = 0; i < newarrays.length; i++)
+      if (newarrays[i].id !== obj.id) {
+        console.log('не нашел')
+      }
+      else {
+        newarrays[i].value = obj.value;
+        console.log(newarrays)
+      }
+
+    setList(newarrays)
+
+    let newarray = list.filter((item) => item.value !== value)
+    setList(newarray)
+    console.log(list)
   };
+
 
   const deletehandler = (id) => {
     let newarray = list.filter((item) => item.id !== id)
@@ -73,42 +75,36 @@ console.log(obj)
 
   let check = () => {
     checkbox.current.checked = true
-    
   }
 
   return (
-    <>
-      {/* <Getcomponents /> */}
-      <div >
+    <div >
+      <div className='position'>
+        <TextField id="standard-basic" label="заметки" variant="standard" ref={ref} value={inputs} onChange={(e) => setInputs(e.target.value)} />
+        <Button onClick={addfrominput} variant="contained" endIcon={<SendIcon />}> Send  </Button>
+      </div>
 
-        <div className='position'>
-          <TextField id="standard-basic" label="заметки" variant="standard" ref={ref} value={inputs} onChange={(e) => setInputs(e.target.value)} />
-          <Button onClick={addfrominput} variant="contained" endIcon={<SendIcon />}> Send  </Button>
-        </div>
-
-        {list.map((item) => {
-          return (
-            <div key={item.id} >
-              <div className='flow positionreder'> <input type="checkbox" name="disabled" ref={checkbox} ></input>
-                <p onClick={check}> {item.value} </p>
-                <Tooltip title="Delete">
-                  <IconButton onClick={() => deletehandler(item.id)} >
-                    <DeleteIcon />
-                  </IconButton>
-                </Tooltip>
-                <div className='opasity'>
-                  <input type="text" ref={nameField} placeholder='add text' />
-                  <Button variant="text" onClick={() => send(item.id)} >  edit </Button>
-                </div>
+      {list.map((item) => {
+        return (
+          <div key={item.id} >
+            <div className='flow positionreder'> <input type="checkbox" name="disabled" ref={checkbox} ></input>
+              <p onClick={check}> {item.value} </p>
+              <Tooltip title="Delete">
+                <IconButton onClick={() => deletehandler(item.id)} >
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
+              <div className='opasity'>
+                <input type="text" placeholder='add text' value={edit} onChange={(e) => setEdit(e.target.value)} />
+                <Button variant="text" onClick={() => send(item.id)} >  edit </Button>
               </div>
             </div>
-          )
-        })}
-      </div>
-    </>
+          </div>
+        )
+      })}
+    </div>
   )
 }
-
 
 export default App
 
