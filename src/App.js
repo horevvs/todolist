@@ -22,6 +22,7 @@ function App() {
 
   const addfrominput = () => {
     let random = Math.random().toFixed(2) * 1000
+
     setList([...list, { value: inputs, id: random }])
     console.log(list.length)
     let index = list.at(-1);
@@ -42,35 +43,68 @@ function App() {
     })
   }
 
-  const send = (id,value) => {
+
+
+  const send = (id, value) => {
     let obj = {
       value: `${edit}`,
       id: id,
     }
-    console.log(obj)
+
+
 
     let newarrays = list
     for (let i = 0; i < newarrays.length; i++)
       if (newarrays[i].id !== obj.id) {
-        console.log('не нашел')
       }
       else {
-        newarrays[i].value = obj.value;
-        console.log(newarrays)
+        newarrays[i].value = obj.value
       }
-
     setList(newarrays)
 
     let newarray = list.filter((item) => item.value !== value)
     setList(newarray)
     console.log(list)
-  };
+
+    // сюда доюавить то что должно попадать с редактирования
+
+
+    let obj2 = {
+      name: obj.value
+    }
+
+
+
+
+
+
+    // здесб вместо 299 должен попадать то айдишник   в котором было записано изначально//
+    fetch('https://todo.soprano.biz/note/299', {
+      method: 'PUT',
+      body: JSON.stringify(obj2),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+
+
+
+
+
+  }
 
 
   const deletehandler = (id) => {
+
     let newarray = list.filter((item) => item.id !== id)
     setList(newarray)
     console.log(list)
+
+
+
+
+
+
   }
 
   let check = () => {
