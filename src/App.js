@@ -12,6 +12,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 
+import BackspaceSharpIcon from '@mui/icons-material/BackspaceSharp';
+
 
 
 
@@ -19,13 +21,13 @@ import DialogContentText from '@mui/material/DialogContentText';
 function App() {
 
 
-  //
+  // подтвержедние удаления //
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
-  setOpen(false);
+    setOpen(false);
   };
 
   //
@@ -38,20 +40,28 @@ function App() {
   const [inputs, setInputs] = useState([])
   const [list, setList] = useState([])
   const [edit, setEdit] = useState([])
+  const [returnedit, setReturnedit] = useState([])
 
+  // добвление элемента с интпута //
   const addfrominput = () => {
-    let random = Math.random().toFixed(2) * 1000
+    let random = Math.random().toFixed(2) * 100
 
     setList([...list, { value: inputs, id: random }])
+
+    // просто складываем сюда тоже самое что и в лист
+    setReturnedit([...returnedit, { value: inputs, id: random }])
+
+
+    // ищем последний элемент масссива, чтобы  положить  отправить его на сервер.
     console.log(list.length)
     let index = list.at(-1);
     let obj = {
       name: index.value
     }
 
-    console.log(index.value)
-    console.log(index.id)
-    console.log(obj.name)
+    console.log(returnedit)
+    console.log(list)
+
 
     fetch('https://todo.soprano.biz/note', {
       method: 'POST',
@@ -62,24 +72,26 @@ function App() {
     })
   }
 
+  //  изменение отредактированной строки 
   const send = (id, value) => {
     let obj = {
       value: `${edit}`,
       id: id,
     }
 
-    let newarrays = list
-    for (let i = 0; i < newarrays.length; i++)
-      if (newarrays[i].id !== obj.id) {
+    for (let i = 0; i < list.length; i++)
+      if (list[i].id !== obj.id) {
       }
       else {
-        newarrays[i].value = obj.value
+        list[i].value = obj.value
       }
-    setList(newarrays)
 
     let newarray = list.filter((item) => item.value !== value)
     setList(newarray)
     console.log(list)
+    console.log(returnedit)
+
+
 
     // сюда доюавить то что должно попадать с редактирования
     let obj2 = {
@@ -96,18 +108,59 @@ function App() {
     })
   }
 
-
+  // удаление заметки
   const deletehandler = (id) => {
     let newarray = list.filter((item) => item.id !== id)
     setList(newarray)
     console.log(list)
-
     setOpen(false);
   }
 
+  // толи нужен толи нет
   let check = () => {
     checkbox.current.checked = true
+    checkbox.current.styles = 'color:red';
   }
+
+  let returndeleted = (id, value) => {
+
+    let obj = {
+     ids: id,
+     }
+
+    console.log(list)
+    console.log('was')
+
+    console.log(returnedit)
+    console.log('was')
+
+    for (let i = 0; i < returnedit.length; i++)
+     if (returnedit[i].id === obj.ids) {
+     list[i].value = returnedit[i].value
+    // console.log(returnedit[i].value)
+    // console.log(returnedit[i].id)
+    // console.log(list[i].value)
+    // console.log(list[i].id)
+    // list[i].value = 22
+    // console.log(list)
+    // console.log(list[i].value + 'cтало')
+    // console.log(returnedit[i].value + 'было')
+    // setList(list)
+    // console.log(list)
+    // console.log('now')
+    console.log(list)
+    console.log('now')
+
+    let newarray = list.filter((item) => item.value !== value)
+    setList(newarray)
+
+     }
+  }
+
+
+
+
+
 
   return (
 
@@ -127,23 +180,25 @@ function App() {
                     <DeleteIcon />
                   </IconButton>
                 </Tooltip>
-                <Dialog  className='modalDialog '
+                <Dialog className='modalDialog '
                   open={open}
                   onClose={handleClose}
-                 >
+                >
                   <DialogContent >
-                    <DialogContentText  className='modal'>
+                    <DialogContentText className='modal'>
                       Вы точно  хотите удалить заметку?
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
-                    <Button  color="warning" onClick={() => deletehandler(item.id) }
+                    <Button color="warning" onClick={() => deletehandler(item.id)}
                     >Да</Button>
                     <Button onClick={handleClose} autoFocus>
                       Нет
                     </Button>
                   </DialogActions>
                 </Dialog>
+
+
               </div>
 
               {/* <Tooltip title="Delete">
@@ -158,7 +213,11 @@ function App() {
               <div className='opasity'>
                 <input type="text" placeholder='add text' value={edit} onChange={(e) => setEdit(e.target.value)} />
                 <Button variant="text" onClick={() => send(item.id)} >  edit </Button>
-
+                <Tooltip title="return edit">
+                  <IconButton onClick={() => returndeleted(item.id)} >
+                    <BackspaceSharpIcon />
+                  </IconButton>
+                </Tooltip>
               </div>
             </div>
           </div>
