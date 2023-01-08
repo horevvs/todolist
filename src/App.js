@@ -11,16 +11,17 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-
 import BackspaceSharpIcon from '@mui/icons-material/BackspaceSharp';
 
 
 
+let a = fetch('https://jsonplaceholder.typicode.com/users')
+
+console.log(a)
+
 
 
 function App() {
-
-
   // подтвержедние удаления //
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
@@ -29,18 +30,18 @@ function App() {
   const handleClose = () => {
     setOpen(false);
   };
-
   //
-
-
   const ref = useRef(null);
-
   const checkbox = useRef(null);
 
   const [inputs, setInputs] = useState([])
   const [list, setList] = useState([])
   const [edit, setEdit] = useState([])
   const [returnedit, setReturnedit] = useState([])
+
+
+
+
 
   // добвление элемента с интпута //
   const addfrominput = () => {
@@ -59,8 +60,8 @@ function App() {
       name: index.value
     }
 
-    console.log(returnedit)
-    console.log(list)
+    // console.log(returnedit)
+    // console.log(list)
 
 
     fetch('https://todo.soprano.biz/note', {
@@ -78,6 +79,18 @@ function App() {
       value: `${edit}`,
       id: id,
     }
+    // console.log(obj.id)
+
+
+    // находим айдишиник нашего  измняемого элемента  
+    // for (let i = 0; i < returnedit.length; i++)
+    //   if (returnedit[i].id === obj.id) {
+    //     alert('find returnedit ')
+    //     let findreturneditname = returnedit[i].value
+    //     console.log(findreturneditname + 'это он')
+    //   }
+
+
 
     for (let i = 0; i < list.length; i++)
       if (list[i].id !== obj.id) {
@@ -88,82 +101,142 @@ function App() {
 
     let newarray = list.filter((item) => item.value !== value)
     setList(newarray)
-    console.log(list)
-    console.log(returnedit)
+    // console.log(list)
+    // console.log(returnedit)
 
-
-
-    // сюда доюавить то что должно попадать с редактирования
+    // попадет в фетч чтобы потом участвовать в пут запросе 
     let obj2 = {
       name: obj.value
     }
 
-    // здесб вместо 299 должен попадать то айдишник   в котором было записано изначально//
-    fetch('https://todo.soprano.biz/note/299', {
-      method: 'PUT',
-      body: JSON.stringify(obj2),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
+
+    // отюда не понятно
+    fetch('https://todo.soprano.biz/note')
+      .then((response) => response.json())
+      .then((data) => {
+        // взяли наш массив в который складывем изначальные туду
+        for (let i = 0; i < returnedit.length; i++)
+          // фильтруем если наши айди совпадабт получим изначально имя которое было в пос запросе
+          if (returnedit[i].id === obj.id) {
+            // alert('find returnedit ')
+            // получаем результат  имя  которое изначально было в пост запросе
+            let findreturneditname = returnedit[i].value
+            // console.log(findreturneditname + 'это он точно')
+
+            // получсем наш большой массив с бэкэнда
+            for (let i = 0; i < data.length; i++)
+              // фильтруем если имя в большом массиве рано имени которое было в переменной  findreturneditname
+              if (data[i].name === findreturneditname) {
+                // alert('find')
+                // alert(data[i].id )
+                let thisnewLet = data[i].id
+                // console.log(thisnewLet + 'это он')
+                let url = `https://todo.soprano.biz/note/${thisnewLet}`
+                fetch(url, {
+                  method: 'PUT',
+                  body: JSON.stringify(obj2),
+                  headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                  },
+                })
+              }
+          }
+      }
+      )
+
+
+    // // сюда доюавить то что должно попадать с редактирования
+    // let idName = 299;
+    // let url = `https://todo.soprano.biz/note/${idName}`
+    // // здесб вместо 299 должен попадать то айдишник   в котором было записано изначально//
+    // fetch(url, {
+    //   method: 'PUT',
+    //   body: JSON.stringify(obj2),
+    //   headers: {
+    //     'Content-type': 'application/json; charset=UTF-8',
+    //   },
+    // })
   }
 
   // удаление заметки
   const deletehandler = (id) => {
     let newarray = list.filter((item) => item.id !== id)
     setList(newarray)
-    console.log(list)
+
+
+    fetch('https://todo.soprano.biz/note')
+      .then((response) => response.json())
+      .then((data) => {
+        
+
+
+
+
+        // взяли наш массив в который складывем изначальные туду
+        for (let i = 0; i < returnedit.length; i++)
+          // фильтруем если наши айди совпадабт получим изначально имя которое было в пос запросе
+          if (returnedit[i].id === id) {
+            // alert('find returnedit ')
+            // получаем результат  имя  которое изначально было в пост запросе
+            let findreturneditname = returnedit[i].id
+            console.log(findreturneditname + 'это он точно')
+
+            // получсем наш большой массив с бэкэнда
+            for (let i = 0; i < data.length; i++)
+              // фильтруем если имя в большом массиве рано имени которое было в переменной  findreturneditname
+              if (data[i].id === findreturneditname) {
+                alert('find')
+                alert(data[i].id )
+                let thisnewLet = data[i].id
+                console.log(thisnewLet + 'это он')
+                let url = `https://todo.soprano.biz/note/${thisnewLet}`
+                fetch(url, {
+                  method: 'DELETE',
+                })
+              }
+          }
+      }
+      )
+
+
+
+
+
+
+    fetch('https://jsonplaceholder.typicode.com/posts/1')
+      .then((response) => response.json())
+      .then((json) => console.log(json)
+
+
+
+      );
+
+
+
+
     setOpen(false);
   }
 
-  // толи нужен толи нет
-  let check = () => {
-    checkbox.current.checked = true
-    checkbox.current.styles = 'color:red';
+  // толи нужен толи нет потом допилить
+  let check = (id) => {
+    // alert(id)
+    // checkbox.current.style.textDecoration = 'line-through'
   }
+
 
   let returndeleted = (id, value) => {
-
     let obj = {
-     ids: id,
-     }
-
-    console.log(list)
-    console.log('was')
-
-    console.log(returnedit)
-    console.log('was')
+      ids: id,
+    }
 
     for (let i = 0; i < returnedit.length; i++)
-     if (returnedit[i].id === obj.ids) {
-     list[i].value = returnedit[i].value
-    // console.log(returnedit[i].value)
-    // console.log(returnedit[i].id)
-    // console.log(list[i].value)
-    // console.log(list[i].id)
-    // list[i].value = 22
-    // console.log(list)
-    // console.log(list[i].value + 'cтало')
-    // console.log(returnedit[i].value + 'было')
-    // setList(list)
-    // console.log(list)
-    // console.log('now')
-    console.log(list)
-    console.log('now')
-
-    let newarray = list.filter((item) => item.value !== value)
-    setList(newarray)
-
-     }
+      if (returnedit[i].id === obj.ids) {
+        list[i].value = returnedit[i].value
+        let newarray = list.filter((item) => item.value !== value)
+        setList(newarray)
+      }
   }
-
-
-
-
-
-
   return (
-
     <div >
       <div className='position'>
         <TextField id="standard-basic" label="заметки" variant="standard" ref={ref} value={inputs} onChange={(e) => setInputs(e.target.value)} />
@@ -172,8 +245,8 @@ function App() {
       {list.map((item) => {
         return (
           <div key={item.id} >
-            <div className='flow positionreder'> <input type="checkbox" name="disabled" ref={checkbox} ></input>
-              <p onClick={check}> {item.value} </p>
+            <div className='flow positionreder'> <input type="checkbox" onClick={() => check(item.id)} ref={checkbox}  ></input>
+              <p  > {item.value} </p>
               <div>
                 <Tooltip title="Delete">
                   <IconButton onClick={handleClickOpen} >
@@ -201,13 +274,7 @@ function App() {
 
               </div>
 
-              {/* <Tooltip title="Delete">
-                <IconButton onClick={() => deletehandler(item.id)} >
-                  <DeleteIcon />
-                 
-                </IconButton>
-             
-              </Tooltip> */}
+
 
 
               <div className='opasity'>

@@ -14,56 +14,6 @@
     <script>
 
 
-fetch('https://todo.soprano.biz/note')
-.then((response) => response.json())
-.then((json) => {
-let numberid = 300;
-
-let result;
-for(let i = 0; i < json.length; i++) {
-  if(json[i].name == numberid) {
-    result = json[i].id;
-    break;
-  }
-}
-console.log(result);
-
-})
-
-
-
-
-
-
-
-
-
-
-        // let obj2 = {
-        //     name: 111111
-        // }
-
-
-
-        // fetch('https://todo.soprano.biz/note/299', {
-        //     method: 'PUT',
-        //     body: JSON.stringify(obj2),
-        //     headers: {
-        //         'Content-type': 'application/json; charset=UTF-8',
-        //     },
-        // })
-// fetch('https://todo.soprano.biz/note/{id:299}', {
-//   method: 'PUT',
-//   body: JSON.stringify({
-//     name:'yes'
-//   }),
-//   headers: {
-//     'Content-type': 'application/json; charset=UTF-8',
-//   },
-// })
-//   .then((response) => response.json())
-//   .then((json) => console.log(json));
-
 
 
 
@@ -78,16 +28,16 @@ console.log(result);
 
 
 
-        // fetch('https://todo.soprano.biz/note/')
-        //     .then((response) => response.json())
-        //     .then((json) => console.log(json.length))
-            // .then((json) => {
-            //     for (let i = 0; i <= json.length; i++)
-            //         fetch(`https://todo.soprano.biz/note/${i}`, {
-            //             method: 'DELETE',
-            //         });
+        fetch('https://todo.soprano.biz/note/')
+            .then((response) => response.json())
+            .then((json) => console.log(json.length))
+            .then((json) => {
+                for (let i = 0; i <= json.length; i++)
+                    fetch(`https://todo.soprano.biz/note/${i}`, {
+                        method: 'DELETE',
+                    });
 
-            // })
+            })
 
 
 
